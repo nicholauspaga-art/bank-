@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>360° Rotating Card</title>
+<style>
+  :root {
+    --bg: #14171c;
+    --card-front: #1f6f5c;
+    --card-back: #d97a3f;
+    --ink: #f4f1ea;
+    --muted: #9aa3ad;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    background: var(--bg);
+    font-family: -apple-system, "Segoe UI", Inter, sans-serif;
+    color: var(--ink);
+  }
+  .stage {
+    perspective: 1200px;
+    width: 260px;
+    height: 360px;
+  }
+  .card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1.1s cubic-bezier(.34,1.56,.64,1);
+    cursor: pointer;
+  }
+  .card.spin { transform: rotateY(360deg); }
+  .face {
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    backface-visibility: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,.35);
+  }
+  .front {
+    background: linear-gradient(160deg, var(--card-front), #123f34);
+  }
+  .back {
+    background: linear-gradient(160deg, var(--card-back), #8a4a1f);
+    transform: rotateY(180deg);
+  }
+  .face span.big { font-size: 48px; font-weight: 600; }
+  .face span.small { font-size: 13px; letter-spacing: .04em; color: rgba(244,241,234,.75); }
+  button {
+    background: none;
+    border: 1px solid var(--muted);
+    color: var(--ink);
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="card" id="card">
+    <div class="face front">
+      <span class="big">A</span>
+      <span class="small">click the card, or the button below</span>
+    </div>
+    <div class="face back">
+      <span class="big">♠</span>
+      <span class="small">full 360° spin, back visible mid-turn</span>
+    </div>
+  </div>
+</div>
+
+<button id="spinBtn">Spin 360°</button>
+
+<script>
+  const card = document.getElementById('card');
+  let turns = 0;
+
+  function spin() {
+    turns += 1;
+    card.style.transform = `rotateY(${turns * 360}deg)`;
+  }
+
+  card.addEventListener('click', spin);
+  document.getElementById('spinBtn').addEventListener('click', spin);
+</script>
+
+</body>
+</html>
